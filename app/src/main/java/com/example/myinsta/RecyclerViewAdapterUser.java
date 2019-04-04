@@ -12,12 +12,12 @@ import java.util.ArrayList;
 
 public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAdapterUser.UserViewHolder> {
 
-    private final Object Context;
-    private ArrayList<String> UserList = new ArrayList<>();
+    private ArrayList<String> userList = new ArrayList<>();
+    private Context context;
 
-    public RecyclerViewAdapterUser(Context context, ArrayList<String> userList, Context context1){
-        UserList = userList;
-        Context = context;
+    public RecyclerViewAdapterUser(Context context2, ArrayList<String> userList2){
+        userList = userList2;
+        context = context2 ;
     }
 
     @NonNull
@@ -30,12 +30,12 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
 
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder userViewHolder, int position) {
-        userViewHolder.userHashtagTv.setText(UserList.get(position));
+        userViewHolder.userHashtagTv.setText(userList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return UserList.size();
+        return userList.size();
     }
 
     public class UserViewHolder extends RecyclerView.ViewHolder {
