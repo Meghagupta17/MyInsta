@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#caeb5e"
+    tools:context=".LogedInActivity">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="60dp"
+        android:gravity="center_horizontal"
+        android:text="Welcome to MyInsta"
+        android:textColor="#0009ff"
+        android:textSize="25sp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnPost"
+        android:text="Make a Post"
+        android:layout_marginTop="60dp"
+        android:layout_gravity="center"
+        android:background="#33cc5a"
+        android:textSize="20sp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnuserList"
+        android:text="Select User"
+        android:layout_marginTop="60dp"
+        android:layout_gravity="center"
+        android:background="#33cc5a"
+        android:textSize="20sp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnhastagList"
+        android:text="Select Hastag"
+        android:layout_marginTop="60dp"
+        android:layout_gravity="center"
+        android:background="#33cc5a"
+        android:textSize="20sp"/>
+
+</LinearLayout>

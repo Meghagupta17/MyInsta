@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="40dp"
+    android:layout_marginRight="40dp"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:background="#caeb5e">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        android:layout_gravity="center"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnuploadImage"
+        android:text="upload"
+        android:layout_marginTop="60dp"
+        android:layout_gravity="center"
+        android:background="#33cc5a"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/postText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_marginTop="40dp"
+        android:text=""
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/addHashtag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_marginTop="40dp"
+        android:textSize="20sp"
+        android:text="" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnmakePost"
+        android:text="Make a Post"
+        android:layout_marginTop="60dp"
+        android:layout_gravity="center"
+        android:background="#33cc5a"
+        android:textSize="20sp"/>
+
+</LinearLayout>

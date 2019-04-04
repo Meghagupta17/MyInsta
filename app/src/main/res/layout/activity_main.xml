@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:background="#caeb5e"
+    android:padding="40dp">
+
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="20dp"
+        android:layout_marginTop="40dp"
+        android:hint="email"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:textSize="20sp"
+         />
+
+    <EditText
+        android:id="@+id/userName"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="20dp"
+        android:layout_marginTop="40dp"
+        android:hint="User Name"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="20sp"
+         />
+
+    <EditText
+        android:id="@+id/nickName"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="20dp"
+        android:layout_marginTop="40dp"
+        android:hint="Nick Name"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="20sp"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnlogin"
+        android:text="Sign In"
+        android:layout_marginTop="60dp"
+        android:layout_gravity="center"
+        android:background="#33cc5a"
+        android:textSize="20sp"/>
+
+</LinearLayout>
