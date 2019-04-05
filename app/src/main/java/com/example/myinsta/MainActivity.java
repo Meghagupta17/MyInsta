@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
         username = findViewById(R.id.userName);
         nickname = findViewById(R.id.nickName);
 
+        //username.setVisibility(EditText.INVISIBLE);;
+       // nickname.setEnabled(false);
         btnlogin = findViewById(R.id.btnlogin);
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -16,25 +16,35 @@ import java.util.ArrayList;
 
 public class LogedInActivity extends AppCompatActivity {
 
-    Button btnPost;
-    Button btnuploadImage;
+    //componenets in Logedin Activity
     Button btnmakePost;
     Button btnuserList;
     Button btnhastagList;
-    ImageView image;
-    EditText postText, addHashtag, rvtext, rvhashtag;
+    Button btnPostList;
     private ArrayList<String> userNameList = new ArrayList<>();
     private ArrayList<String> hashtagList = new ArrayList<>();
+    private ArrayList<String> postimage = new ArrayList<>();
+    private ArrayList<String> postuser = new ArrayList<>();
+    private ArrayList<String> posthasgtag = new ArrayList<>();
 
+
+    //componenets of create new post Dialog box
+    Button btnPost;
+    Button btnuploadImage;
+    ImageView image;
+    EditText postText;
+    EditText addHashtag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //Make a post Dialog Box
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_create_post, null);
 
+        //Chail components of dialog box make post
         image = dialogView.findViewById(R.id.image);
         postText = dialogView.findViewById(R.id.postText);
         addHashtag = dialogView.findViewById(R.id.addHashtag);
@@ -55,7 +65,7 @@ public class LogedInActivity extends AppCompatActivity {
             }
         });
 
-
+        //Creating the dialog box on click of btnpost(Make a post)
         btnPost = findViewById(R.id.btnPost);
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +113,24 @@ public class LogedInActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
+
+        final AlertDialog.Builder builderpost = new AlertDialog.Builder(this);
+        final View dialogViewpost = LayoutInflater.from(this).inflate(R.layout.dialog_recyclerview_postlist, null);
+
+        btnPostList = findViewById(R.id.btnPostList);
+        btnPostList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builderpost.setView(dialogViewpost);
+                AlertDialog alertDialog = builderpost.create();
+                initPost();
+                RecyclerView recyclerView = dialogViewpost.findViewById(R.id.rvpostList);
+                RecyclerViewAdapterPost adapterPost = new RecyclerViewAdapterPost(LogedInActivity.this, postimage, postuser, posthasgtag);
+                recyclerView.setAdapter(adapterPost);
+                recyclerView.setLayoutManager(new LinearLayoutManager(LogedInActivity.this ));
+                alertDialog.show();
+            }
+        });
     }
 
     private void initUser(){
@@ -118,10 +146,16 @@ public class LogedInActivity extends AppCompatActivity {
 
     }
 
-    /*private void initRecyclerView(){
-        RecyclerView recyclerView = dialogViewuser.findViewById(R.id.rvuserList);
-        RecyclerViewAdapterUser adapterUser = new RecyclerViewAdapterUser(LogedInActivity.this, userNameList);
-        recyclerView.setAdapter(adapterUser);
-        recyclerView.setLayoutManager(new LinearLayoutManager(LogedInActivity.this));
-    }*/
+    private void initPost(){
+        postimage.add("https://www.telegraph.co.uk/content/dam/Travel/2016/August/san-diego-AP75672386.jpg?imwidth=1400");
+        postuser.add("willow");
+        posthasgtag.add("#san diego");
+        postimage.add("https://www.trolleytours.com/wp-content/uploads/2016/06/san-diego-beaches-480x270.jpg");
+        postuser.add("logan");
+        posthasgtag.add("#beaches");
+        postimage.add("http://www.solar-nation.org/images/sandiegocasolarpower.jpg");
+        postuser.add("sofia");
+        posthasgtag.add("#sunny");
+    }
+
 }
