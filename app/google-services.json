@@ -13,7 +13,16 @@
           "package_name": "com.example.myinsta"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "385198241368-3mvbsk3ldpsjfteu9rot174ehfclcmg1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myinsta",
+            "certificate_hash": "3ec206af2b2ef4d7e7a96c271636c2bc52d7ddc2"
+          }
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD7MtuiSERJkyU0cd0PdzAX6Sttr1usxr4"

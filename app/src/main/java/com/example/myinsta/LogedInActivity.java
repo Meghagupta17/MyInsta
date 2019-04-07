@@ -1,5 +1,8 @@
 package com.example.myinsta;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,23 +15,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class LogedInActivity extends AppCompatActivity {
 
-    //componenets in Logedin Activity
+    //components in LogedIn Activity
     Button btnmakePost;
     Button btnuserList;
     Button btnhastagList;
     Button btnPostList;
     private ArrayList<String> userNameList = new ArrayList<>();
     private ArrayList<String> hashtagList = new ArrayList<>();
-    private ArrayList<String> postimage = new ArrayList<>();
-    private ArrayList<String> postuser = new ArrayList<>();
-    private ArrayList<String> posthasgtag = new ArrayList<>();
+    private ArrayList<Post> postList = new ArrayList<>();
+    private Uri imageUri;
+    private int PICK_IMAGE_REQUEST = 1;
 
-
-    //componenets of create new post Dialog box
+    //components of create new post Dialog box
     Button btnPost;
     Button btnuploadImage;
     ImageView image;
@@ -44,7 +48,7 @@ public class LogedInActivity extends AppCompatActivity {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_create_post, null);
 
-        //Chail components of dialog box make post
+        //components of dialog box to make post
         image = dialogView.findViewById(R.id.image);
         postText = dialogView.findViewById(R.id.postText);
         addHashtag = dialogView.findViewById(R.id.addHashtag);
@@ -53,7 +57,7 @@ public class LogedInActivity extends AppCompatActivity {
         btnuploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                openFileChooser();
             }
         });
 
@@ -90,7 +94,7 @@ public class LogedInActivity extends AppCompatActivity {
                 RecyclerView recyclerView = dialogViewuser.findViewById(R.id.rvuserList);
                 RecyclerViewAdapterUser adapterUser = new RecyclerViewAdapterUser(LogedInActivity.this, userNameList);
                 recyclerView.setAdapter(adapterUser);
-                recyclerView.setLayoutManager(new LinearLayoutManager(LogedInActivity.this ));
+                recyclerView.setLayoutManager(new LinearLayoutManager(LogedInActivity.this));
                 alertDialog.show();
             }
         });
@@ -109,11 +113,12 @@ public class LogedInActivity extends AppCompatActivity {
                 RecyclerView recyclerView = dialogViewhashtag.findViewById(R.id.rvhashtagList);
                 RecyclerViewAdapterHashtag adapterHashtag = new RecyclerViewAdapterHashtag(LogedInActivity.this, hashtagList);
                 recyclerView.setAdapter(adapterHashtag);
-                recyclerView.setLayoutManager(new LinearLayoutManager(LogedInActivity.this ));
+                recyclerView.setLayoutManager(new LinearLayoutManager(LogedInActivity.this));
                 alertDialog.show();
             }
         });
 
+        ////Dialogbox for post list
         final AlertDialog.Builder builderpost = new AlertDialog.Builder(this);
         final View dialogViewpost = LayoutInflater.from(this).inflate(R.layout.dialog_recyclerview_postlist, null);
 
@@ -125,37 +130,73 @@ public class LogedInActivity extends AppCompatActivity {
                 AlertDialog alertDialog = builderpost.create();
                 initPost();
                 RecyclerView recyclerView = dialogViewpost.findViewById(R.id.rvpostList);
-                RecyclerViewAdapterPost adapterPost = new RecyclerViewAdapterPost(LogedInActivity.this, postimage, postuser, posthasgtag);
+                RecyclerViewAdapterPost adapterPost = new RecyclerViewAdapterPost(LogedInActivity.this, postList);
                 recyclerView.setAdapter(adapterPost);
-                recyclerView.setLayoutManager(new LinearLayoutManager(LogedInActivity.this ));
+                recyclerView.setLayoutManager(new LinearLayoutManager(LogedInActivity.this));
                 alertDialog.show();
             }
         });
     }
 
-    private void initUser(){
+    //Dummy data for userlist
+    private void initUser() {
         userNameList.add("Willow");
         userNameList.add("Logan");
         userNameList.add("Sofia");
     }
 
-    private void initHashtag(){
+    //Dummy data for hasttag list
+    private void initHashtag() {
         hashtagList.add("#SanDiedo");
         hashtagList.add("#sunny");
         hashtagList.add("#beaches");
-
     }
 
-    private void initPost(){
-        postimage.add("https://www.telegraph.co.uk/content/dam/Travel/2016/August/san-diego-AP75672386.jpg?imwidth=1400");
-        postuser.add("willow");
-        posthasgtag.add("#san diego");
-        postimage.add("https://www.trolleytours.com/wp-content/uploads/2016/06/san-diego-beaches-480x270.jpg");
-        postuser.add("logan");
-        posthasgtag.add("#beaches");
-        postimage.add("http://www.solar-nation.org/images/sandiegocasolarpower.jpg");
-        postuser.add("sofia");
-        posthasgtag.add("#sunny");
+    ////Dummy data for postlist
+    private void initPost() {
+
+        Post newpost = new Post();
+        newpost.image = "https://www.telegraph.co.uk/content/dam/Travel/2016/August/san-diego-AP75672386.jpg?imwidth=1400";
+        newpost.user = "willow";
+        newpost.hashtag = "#san diego";
+        newpost.postText = "Enjoy";
+        postList.add(newpost);
+
+        newpost = new Post();
+        newpost.image = "https://www.trolleytours.com/wp-content/uploads/2016/06/san-diego-beaches-480x270.jpg";
+        newpost.user = "logan";
+        newpost.hashtag = "#beaches";
+        newpost.postText = "Beautiful";
+        postList.add(newpost);
+
+
+        newpost = new Post();
+        newpost.image = "http://www.solar-nation.org/images/sandiegocasolarpower.jpg";
+        newpost.user = "sofia";
+        newpost.hashtag = "#sunny";
+        newpost.postText = "San Diego";
+        postList.add(newpost);
     }
 
+    private void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            imageUri = data.getData();
+            Glide.with(this)
+                    .asBitmap()
+                    .load(imageUri)
+                    .into(image);
+        }
+
+    }
 }

@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:hint="email"
         android:ems="10"
         android:inputType="textEmailAddress"
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:hint="User Name"
         android:ems="10"
         android:inputType="textPersonName"
@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:hint="Nick Name"
         android:ems="10"
         android:inputType="textPersonName"
@@ -51,9 +51,40 @@
         android:layout_height="wrap_content"
         android:id="@+id/btnlogin"
         android:text="Sign In"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:layout_gravity="center"
         android:background="#33cc5a"
         android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/newuser"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="40dp"
+        android:layout_marginTop="20dp"
+        android:text="New User?"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:textStyle="bold"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnsignup"
+        android:text="Sign up"
+        android:layout_gravity="center"
+        android:background="#33cc5a"
+        android:textSize="20sp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnback"
+        android:text="Back"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:background="#33cc5a"
+        android:textSize="20sp" />
 
 </LinearLayout>
