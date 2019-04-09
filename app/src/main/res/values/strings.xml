@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">My Insta</string>
+    <string name="back">Back</string>
+    <string name="sign_up">Sign up</string>
+    <string name="new_user">New User?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="nick_name">Nick Name</string>
+    <string name="user_name">User Name</string>
+    <string name="email">email</string>
+    <string name="welcome_to_myinsta">Welcome to MyInsta</string>
+    <string name="make_a_post">Make a Post</string>
+    <string name="select_user">Select User</string>
+    <string name="select_hastag">Select Hastag</string>
+    <string name="view_all_post">View all Post</string>
+    <string name="upload">Upload</string>
 </resources>

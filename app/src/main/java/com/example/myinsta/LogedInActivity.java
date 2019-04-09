@@ -2,13 +2,12 @@ package com.example.myinsta;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +37,7 @@ public class LogedInActivity extends AppCompatActivity {
     ImageView image;
     EditText postText;
     EditText addHashtag;
+    AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,12 +70,14 @@ public class LogedInActivity extends AppCompatActivity {
         });
 
         //Creating the dialog box on click of btnpost(Make a post)
+
+        builder.setView(dialogView);
+        alertDialog = builder.create();
+
         btnPost = findViewById(R.id.btnPost);
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                builder.setView(dialogView);
-                AlertDialog alertDialog = builder.create();
                 alertDialog.show();
             }
         });
@@ -84,12 +86,13 @@ public class LogedInActivity extends AppCompatActivity {
         final AlertDialog.Builder builderuser = new AlertDialog.Builder(this);
         final View dialogViewuser = LayoutInflater.from(this).inflate(R.layout.dialog_recyclerview_userlist, null);
 
+        builderuser.setView(dialogViewuser);
+        alertDialog = builderuser.create();
+
         btnuserList = findViewById(R.id.btnuserList);
         btnuserList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                builderuser.setView(dialogViewuser);
-                AlertDialog alertDialog = builderuser.create();
                 initUser();
                 RecyclerView recyclerView = dialogViewuser.findViewById(R.id.rvuserList);
                 RecyclerViewAdapterUser adapterUser = new RecyclerViewAdapterUser(LogedInActivity.this, userNameList);
@@ -103,12 +106,13 @@ public class LogedInActivity extends AppCompatActivity {
         final AlertDialog.Builder builderhashtag = new AlertDialog.Builder(this);
         final View dialogViewhashtag = LayoutInflater.from(this).inflate(R.layout.dialog_recycleview_hashtaglist, null);
 
+        builderhashtag.setView(dialogViewhashtag);
+        alertDialog = builderhashtag.create();
+
         btnhastagList = findViewById(R.id.btnhastagList);
         btnhastagList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                builderhashtag.setView(dialogViewhashtag);
-                AlertDialog alertDialog = builderhashtag.create();
                 initHashtag();
                 RecyclerView recyclerView = dialogViewhashtag.findViewById(R.id.rvhashtagList);
                 RecyclerViewAdapterHashtag adapterHashtag = new RecyclerViewAdapterHashtag(LogedInActivity.this, hashtagList);
@@ -122,12 +126,13 @@ public class LogedInActivity extends AppCompatActivity {
         final AlertDialog.Builder builderpost = new AlertDialog.Builder(this);
         final View dialogViewpost = LayoutInflater.from(this).inflate(R.layout.dialog_recyclerview_postlist, null);
 
+        builderpost.setView(dialogViewpost);
+        alertDialog = builderpost.create();
+
         btnPostList = findViewById(R.id.btnPostList);
         btnPostList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                builderpost.setView(dialogViewpost);
-                AlertDialog alertDialog = builderpost.create();
                 initPost();
                 RecyclerView recyclerView = dialogViewpost.findViewById(R.id.rvpostList);
                 RecyclerViewAdapterPost adapterPost = new RecyclerViewAdapterPost(LogedInActivity.this, postList);
@@ -178,6 +183,7 @@ public class LogedInActivity extends AppCompatActivity {
         postList.add(newpost);
     }
 
+    //sub activity to upload pic
     private void openFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");

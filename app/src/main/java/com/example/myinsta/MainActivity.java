@@ -10,6 +10,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MainActivity extends AppCompatActivity {
 
     EditText email;
@@ -19,42 +23,41 @@ public class MainActivity extends AppCompatActivity {
     Button btnsignup;
     Button btnback;
     TextView newuser;
-    char SigninbtnState;
-    char SignupbtnState;
+    DatabaseReference myRef;
+    int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         email = findViewById(R.id.email);
         username = findViewById(R.id.userName);
         nickname = findViewById(R.id.nickName);
         newuser = findViewById(R.id.newuser);
         btnsignup = findViewById(R.id.btnsignup);
         btnback = findViewById(R.id.btnback);
-        SigninbtnState = 'L';
-        SignupbtnState = 'S';
+
+        FirebaseApp.initializeApp(this);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("/test/UbhZwehuccUpDI24QJvi");
 
         //On first screen email id, signin button, new user?, signup button is visible
         username.setVisibility(EditText.INVISIBLE);
         nickname.setVisibility(EditText.INVISIBLE);
         btnback.setVisibility(EditText.INVISIBLE);
-        //btnsignup.setVisibility(View.INVISIBLE);
-        //newuser.setVisibility(EditText.INVISIBLE);
 
         btnlogin = findViewById(R.id.btnlogin);
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     String s1 = email.getText().toString();
-                    //String s2 = username.getText().toString();
-                    //String s3 = nickname.getText().toString();
 
                     if (!TextUtils.isEmpty(email.getText())) {
                         Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, LogedInActivity.class);
+                        myRef.setValue("Hello, World!" + count++);
                         startActivity(intent);
+
 
                     } else {
                         email.setError("Email id is required!");
@@ -100,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
         btnback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String s1 = email.getText().toString();
                 username.setVisibility(EditText.INVISIBLE);
                 nickname.setVisibility(EditText.INVISIBLE);
                 btnback.setVisibility(EditText.INVISIBLE);
