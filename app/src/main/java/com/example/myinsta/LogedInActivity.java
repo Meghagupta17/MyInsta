@@ -38,6 +38,9 @@ public class LogedInActivity extends AppCompatActivity {
     EditText postText;
     EditText addHashtag;
     AlertDialog alertDialog;
+    AlertDialog alertDialoguser;
+    AlertDialog alertDialoghashtag;
+    AlertDialog alertDialogpost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,7 @@ public class LogedInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         //Make a post Dialog Box
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         final View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_create_post, null);
 
         //components of dialog box to make post
@@ -83,11 +86,11 @@ public class LogedInActivity extends AppCompatActivity {
         });
 
         //Dialog box for userlist button
-        final AlertDialog.Builder builderuser = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builderuser = new AlertDialog.Builder(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         final View dialogViewuser = LayoutInflater.from(this).inflate(R.layout.dialog_recyclerview_userlist, null);
 
         builderuser.setView(dialogViewuser);
-        alertDialog = builderuser.create();
+        alertDialoguser = builderuser.create();
 
         btnuserList = findViewById(R.id.btnuserList);
         btnuserList.setOnClickListener(new View.OnClickListener() {
@@ -98,16 +101,16 @@ public class LogedInActivity extends AppCompatActivity {
                 RecyclerViewAdapterUser adapterUser = new RecyclerViewAdapterUser(LogedInActivity.this, userNameList);
                 recyclerView.setAdapter(adapterUser);
                 recyclerView.setLayoutManager(new LinearLayoutManager(LogedInActivity.this));
-                alertDialog.show();
+                alertDialoguser.show();
             }
         });
 
         //Dialogbox for hashtag list
-        final AlertDialog.Builder builderhashtag = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builderhashtag = new AlertDialog.Builder(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         final View dialogViewhashtag = LayoutInflater.from(this).inflate(R.layout.dialog_recycleview_hashtaglist, null);
 
         builderhashtag.setView(dialogViewhashtag);
-        alertDialog = builderhashtag.create();
+        alertDialoghashtag = builderhashtag.create();
 
         btnhastagList = findViewById(R.id.btnhastagList);
         btnhastagList.setOnClickListener(new View.OnClickListener() {
@@ -118,16 +121,16 @@ public class LogedInActivity extends AppCompatActivity {
                 RecyclerViewAdapterHashtag adapterHashtag = new RecyclerViewAdapterHashtag(LogedInActivity.this, hashtagList);
                 recyclerView.setAdapter(adapterHashtag);
                 recyclerView.setLayoutManager(new LinearLayoutManager(LogedInActivity.this));
-                alertDialog.show();
+                alertDialoghashtag.show();
             }
         });
 
         ////Dialogbox for post list
-        final AlertDialog.Builder builderpost = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builderpost = new AlertDialog.Builder(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         final View dialogViewpost = LayoutInflater.from(this).inflate(R.layout.dialog_recyclerview_postlist, null);
 
         builderpost.setView(dialogViewpost);
-        alertDialog = builderpost.create();
+        alertDialogpost = builderpost.create();
 
         btnPostList = findViewById(R.id.btnPostList);
         btnPostList.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +141,7 @@ public class LogedInActivity extends AppCompatActivity {
                 RecyclerViewAdapterPost adapterPost = new RecyclerViewAdapterPost(LogedInActivity.this, postList);
                 recyclerView.setAdapter(adapterPost);
                 recyclerView.setLayoutManager(new LinearLayoutManager(LogedInActivity.this));
-                alertDialog.show();
+                alertDialogpost.show();
             }
         });
     }

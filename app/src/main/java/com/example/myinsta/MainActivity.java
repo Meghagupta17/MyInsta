@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnsignup;
     Button btnback;
     TextView newuser;
+    FirebaseDatabase firebaseDatabase;
     DatabaseReference myRef;
     int count = 0;
 
@@ -37,9 +38,10 @@ public class MainActivity extends AppCompatActivity {
         btnsignup = findViewById(R.id.btnsignup);
         btnback = findViewById(R.id.btnback);
 
+
         FirebaseApp.initializeApp(this);
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("/test/UbhZwehuccUpDI24QJvi");
+        firebaseDatabase  = FirebaseDatabase.getInstance();
+        myRef = firebaseDatabase.getReference("users");
 
         //On first screen email id, signin button, new user?, signup button is visible
         username.setVisibility(EditText.INVISIBLE);
@@ -55,13 +57,10 @@ public class MainActivity extends AppCompatActivity {
                     if (!TextUtils.isEmpty(email.getText())) {
                         Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, LogedInActivity.class);
-                        myRef.setValue("Hello, World!" + count++);
                         startActivity(intent);
-
 
                     } else {
                         email.setError("Email id is required!");
-
                     }
                 }
         });
@@ -74,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 String s1 = email.getText().toString();
                 String s2 = username.getText().toString();
                 String s3 = nickname.getText().toString();
+
                 btnlogin.setVisibility(EditText.INVISIBLE);
                 newuser.setVisibility(TextView.INVISIBLE);
                 username.setVisibility(EditText.VISIBLE);
@@ -87,7 +87,10 @@ public class MainActivity extends AppCompatActivity {
                         if (!TextUtils.isEmpty(nickname.getText())) {
                             Toast.makeText(MainActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(MainActivity.this, LogedInActivity.class);
+                            myRef.child(s1).child("username").setValue(s2);
+                            myRef.child(s1).child("nickname").setValue(s3);
                             startActivity(intent);
+
                         }else{
                             nickname.setError("Nick Name is required!");
                         }
