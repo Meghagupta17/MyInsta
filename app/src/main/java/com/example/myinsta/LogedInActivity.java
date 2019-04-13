@@ -13,10 +13,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class LogedInActivity extends AppCompatActivity {
 
@@ -29,7 +39,12 @@ public class LogedInActivity extends AppCompatActivity {
     private ArrayList<String> hashtagList = new ArrayList<>();
     private ArrayList<Post> postList = new ArrayList<>();
     private Uri imageUri;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference myRef;
+    FirebaseStorage firebaseStorage;
+    private StorageReference storageReference;
     private int PICK_IMAGE_REQUEST = 1;
+    String userNickName;
 
     //components of create new post Dialog box
     Button btnPost;
@@ -41,20 +56,34 @@ public class LogedInActivity extends AppCompatActivity {
     AlertDialog alertDialoguser;
     AlertDialog alertDialoghashtag;
     AlertDialog alertDialogpost;
+    TextView userid;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        userNickName = getIntent().getExtras().getString("nickname");
+
+        //Firebase init
+        FirebaseApp.initializeApp(this);
+        firebaseDatabase  = FirebaseDatabase.getInstance();
+        myRef = firebaseDatabase.getReference("posts");
+
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference("photos");
+
         //Make a post Dialog Box
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_create_post, null);
 
         //components of dialog box to make post
         image = dialogView.findViewById(R.id.image);
         postText = dialogView.findViewById(R.id.postText);
         addHashtag = dialogView.findViewById(R.id.addHashtag);
+        userid = dialogView.findViewById(R.id.userid);
+        userid.setText(userNickName);
 
         btnuploadImage = dialogView.findViewById(R.id.btnuploadImage);
         btnuploadImage.setOnClickListener(new View.OnClickListener() {
@@ -64,11 +93,25 @@ public class LogedInActivity extends AppCompatActivity {
             }
         });
 
-        btnmakePost = dialogView.findViewById(R.id.btnmakePost);
+
+        btnmakePost = dialogView.findViewById(R.id.btnpostOnline);
         btnmakePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (imageUri.toString() !="") {
+                    String key = UUID.randomUUID().toString();
+                    Post p = new Post(addHashtag.getText().toString(), userNickName, postText.getText().toString(), key);
+                    String keyDb = myRef.push().getKey();
+                    myRef.child(keyDb).setValue(p);
+                    StorageReference filepath = storageReference.child(key);
+                    filepath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(LogedInActivity.this, "Upload Done", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    alertDialog.dismiss();
+                }
             }
         });
 
@@ -86,7 +129,7 @@ public class LogedInActivity extends AppCompatActivity {
         });
 
         //Dialog box for userlist button
-        final AlertDialog.Builder builderuser = new AlertDialog.Builder(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        final AlertDialog.Builder builderuser = new AlertDialog.Builder(this);
         final View dialogViewuser = LayoutInflater.from(this).inflate(R.layout.dialog_recyclerview_userlist, null);
 
         builderuser.setView(dialogViewuser);
@@ -106,7 +149,7 @@ public class LogedInActivity extends AppCompatActivity {
         });
 
         //Dialogbox for hashtag list
-        final AlertDialog.Builder builderhashtag = new AlertDialog.Builder(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        final AlertDialog.Builder builderhashtag = new AlertDialog.Builder(this);
         final View dialogViewhashtag = LayoutInflater.from(this).inflate(R.layout.dialog_recycleview_hashtaglist, null);
 
         builderhashtag.setView(dialogViewhashtag);
@@ -126,7 +169,7 @@ public class LogedInActivity extends AppCompatActivity {
         });
 
         ////Dialogbox for post list
-        final AlertDialog.Builder builderpost = new AlertDialog.Builder(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        final AlertDialog.Builder builderpost = new AlertDialog.Builder(this);
         final View dialogViewpost = LayoutInflater.from(this).inflate(R.layout.dialog_recyclerview_postlist, null);
 
         builderpost.setView(dialogViewpost);
@@ -148,6 +191,7 @@ public class LogedInActivity extends AppCompatActivity {
 
     //Dummy data for userlist
     private void initUser() {
+        userNameList.clear();
         userNameList.add("Willow");
         userNameList.add("Logan");
         userNameList.add("Sofia");
@@ -155,6 +199,7 @@ public class LogedInActivity extends AppCompatActivity {
 
     //Dummy data for hasttag list
     private void initHashtag() {
+        hashtagList.clear();
         hashtagList.add("#SanDiedo");
         hashtagList.add("#sunny");
         hashtagList.add("#beaches");
@@ -162,17 +207,17 @@ public class LogedInActivity extends AppCompatActivity {
 
     ////Dummy data for postlist
     private void initPost() {
-
+        postList.clear();
         Post newpost = new Post();
         newpost.image = "https://www.telegraph.co.uk/content/dam/Travel/2016/August/san-diego-AP75672386.jpg?imwidth=1400";
-        newpost.user = "willow";
+        newpost.userNickName = "willow";
         newpost.hashtag = "#san diego";
         newpost.postText = "Enjoy";
         postList.add(newpost);
 
         newpost = new Post();
         newpost.image = "https://www.trolleytours.com/wp-content/uploads/2016/06/san-diego-beaches-480x270.jpg";
-        newpost.user = "logan";
+        newpost.userNickName = "logan";
         newpost.hashtag = "#beaches";
         newpost.postText = "Beautiful";
         postList.add(newpost);
@@ -180,7 +225,7 @@ public class LogedInActivity extends AppCompatActivity {
 
         newpost = new Post();
         newpost.image = "http://www.solar-nation.org/images/sandiegocasolarpower.jpg";
-        newpost.user = "sofia";
+        newpost.userNickName = "sofia";
         newpost.hashtag = "#sunny";
         newpost.postText = "San Diego";
         postList.add(newpost);
@@ -200,11 +245,13 @@ public class LogedInActivity extends AppCompatActivity {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
+
             imageUri = data.getData();
             Glide.with(this)
                     .asBitmap()
                     .load(imageUri)
                     .into(image);
+
         }
 
     }

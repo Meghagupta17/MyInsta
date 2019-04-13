@@ -1,18 +1,23 @@
 package com.example.myinsta;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,7 +30,9 @@ public class MainActivity extends AppCompatActivity {
     TextView newuser;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference myRef;
-    int count = 0;
+    List<String> emailidList;
+    List<String> usernameList;
+    List<String> nicknameList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +44,35 @@ public class MainActivity extends AppCompatActivity {
         newuser = findViewById(R.id.newuser);
         btnsignup = findViewById(R.id.btnsignup);
         btnback = findViewById(R.id.btnback);
+        emailidList = new ArrayList<>();
+        usernameList = new ArrayList<>();
+        nicknameList = new ArrayList<>();
 
 
         FirebaseApp.initializeApp(this);
         firebaseDatabase  = FirebaseDatabase.getInstance();
         myRef = firebaseDatabase.getReference("users");
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                emailidList.clear();
+                usernameList.clear();
+                nicknameList.clear();
+                for (DataSnapshot ds:dataSnapshot.getChildren()) {
+                    String key = ds.getKey().toString();
+                    Users u = ds.getValue(Users.class);
+                    emailidList.add(u.emailId);
+                    usernameList.add(u.userName);
+                    nicknameList.add(u.nickName);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         //On first screen email id, signin button, new user?, signup button is visible
         username.setVisibility(EditText.INVISIBLE);
@@ -52,14 +83,19 @@ public class MainActivity extends AppCompatActivity {
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    String s1 = email.getText().toString();
+                String s1 = email.getText().toString();
 
-                    if (!TextUtils.isEmpty(email.getText())) {
-                        Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(MainActivity.this, LogedInActivity.class);
-                        startActivity(intent);
-
-                    } else {
+                if (!TextUtils.isEmpty(email.getText())) {
+                    if (!emailidList.contains(s1)) {
+                            email.setError("User not Found");
+                    }else {
+                            int index = emailidList.indexOf(s1);
+                            Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(MainActivity.this, LogedInActivity.class);
+                            intent.putExtra("nickname", nicknameList.get(index));
+                            startActivity(intent);
+                    }
+                }else{
                         email.setError("Email id is required!");
                     }
                 }
@@ -85,11 +121,17 @@ public class MainActivity extends AppCompatActivity {
                     if (!TextUtils.isEmpty(username.getText())) {
 
                         if (!TextUtils.isEmpty(nickname.getText())) {
-                            Toast.makeText(MainActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(MainActivity.this, LogedInActivity.class);
-                            myRef.child(s1).child("username").setValue(s2);
-                            myRef.child(s1).child("nickname").setValue(s3);
-                            startActivity(intent);
+                           if (emailidList.contains(s1)){
+                               email.setError("User Id already exists");
+                           }else {
+                               String uniqueKey = myRef.push().getKey();
+                               Users u = new Users(s1,s2,s3);
+                               myRef.child(uniqueKey).setValue(u);
+                               Toast.makeText(MainActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+                               Intent intent = new Intent(MainActivity.this, LogedInActivity.class);
+                               intent.putExtra("nickname", s3);
+                               startActivity(intent);
+                           }
 
                         }else{
                             nickname.setError("Nick Name is required!");

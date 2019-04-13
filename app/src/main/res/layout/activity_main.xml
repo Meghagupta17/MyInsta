@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:hint="@string/user_name"
         android:ems="10"
         android:inputType="textPersonName"
@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:hint="@string/nick_name"
         android:ems="10"
         android:inputType="textPersonName"
@@ -51,17 +51,18 @@
         android:layout_height="wrap_content"
         android:id="@+id/btnlogin"
         android:text="@string/sign_in"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:background="#33cc5a"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/newuser"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="40dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:text="@string/new_user"
         android:textAlignment="center"
         android:textSize="20sp"
@@ -74,17 +75,20 @@
         android:id="@+id/btnsignup"
         android:text="@string/sign_up"
         android:layout_gravity="center"
+        android:layout_marginTop="10dp"
         android:background="#33cc5a"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnback"
         android:text="@string/back"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:background="#33cc5a"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
 </LinearLayout>

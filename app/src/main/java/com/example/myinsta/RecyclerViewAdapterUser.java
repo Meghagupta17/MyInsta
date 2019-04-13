@@ -16,6 +16,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
     private ArrayList<String> userList = new ArrayList<>();
     private ArrayList<Post> postList = new ArrayList<>();
     private Context context;
+    private AlertDialog alertDialogpost;
 
     public RecyclerViewAdapterUser(Context context2, ArrayList<String> userList2) {
         userList = userList2;
@@ -34,19 +35,22 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
     public void onBindViewHolder(@NonNull UserViewHolder userViewHolder, int position) {
 
         userViewHolder.userHashtagTv.setText(userList.get(position));
+
         final AlertDialog.Builder builderpost = new AlertDialog.Builder(context);
         final View dialogViewpost = LayoutInflater.from(context).inflate(R.layout.dialog_recyclerview_postlist, null);
+
+        builderpost.setView(dialogViewpost);
+
         userViewHolder.userHashtagTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                builderpost.setView(dialogViewpost);
-                AlertDialog alertDialog = builderpost.create();
+                alertDialogpost = builderpost.create();
                 initPost();
                 RecyclerView recyclerView = dialogViewpost.findViewById(R.id.rvpostList);
                 RecyclerViewAdapterPost adapterPost = new RecyclerViewAdapterPost(context, postList);
                 recyclerView.setAdapter(adapterPost);
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                alertDialog.show();
+                alertDialogpost.show();
             }
         });
     }
@@ -69,14 +73,14 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
 
         Post newpost = new Post();
         newpost.image = "https://www.telegraph.co.uk/content/dam/Travel/2016/August/san-diego-AP75672386.jpg?imwidth=1400";
-        newpost.user = "willow";
+        newpost.userNickName = "willow";
         newpost.hashtag = "#san diego";
         newpost.postText = "Enjoy";
         postList.add(newpost);
 
         newpost = new Post();
         newpost.image = "https://www.trolleytours.com/wp-content/uploads/2016/06/san-diego-beaches-480x270.jpg";
-        newpost.user = "logan";
+        newpost.userNickName = "logan";
         newpost.hashtag = "#beaches";
         newpost.postText = "Beautiful";
         postList.add(newpost);
@@ -84,7 +88,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
 
         newpost = new Post();
         newpost.image = "http://www.solar-nation.org/images/sandiegocasolarpower.jpg";
-        newpost.user = "sofia";
+        newpost.userNickName = "sofia";
         newpost.hashtag = "#sunny";
         newpost.postText = "San Diego";
         postList.add(newpost);
