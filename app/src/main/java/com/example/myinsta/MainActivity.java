@@ -123,16 +123,17 @@ public class MainActivity extends AppCompatActivity {
                         if (!TextUtils.isEmpty(nickname.getText())) {
                            if (emailidList.contains(s1)){
                                email.setError("User Id already exists");
-                           }else {
+                           }else if (nicknameList.contains(s3)){
+                               nickname.setError("Nick Name already exists");
+                           } else {
                                String uniqueKey = myRef.push().getKey();
-                               Users u = new Users(s1,s2,s3);
+                               Users u = new Users(s1, s2, s3);
                                myRef.child(uniqueKey).setValue(u);
                                Toast.makeText(MainActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                                Intent intent = new Intent(MainActivity.this, LogedInActivity.class);
                                intent.putExtra("nickname", s3);
                                startActivity(intent);
                            }
-
                         }else{
                             nickname.setError("Nick Name is required!");
                         }

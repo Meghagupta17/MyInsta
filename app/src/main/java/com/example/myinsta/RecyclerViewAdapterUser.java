@@ -15,12 +15,14 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
 
     private ArrayList<String> userList = new ArrayList<>();
     private ArrayList<Post> postList = new ArrayList<>();
+    private ArrayList<Post> postListUser = new ArrayList<>();
     private Context context;
     private AlertDialog alertDialogpost;
 
-    public RecyclerViewAdapterUser(Context context2, ArrayList<String> userList2) {
-        userList = userList2;
-        context = context2;
+    public RecyclerViewAdapterUser(Context context, ArrayList<String> userList, ArrayList<Post>postList) {
+        this.userList = userList;
+        this.context = context;
+        this.postList = postList;
     }
 
     @NonNull
@@ -32,7 +34,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserViewHolder userViewHolder, int position) {
+    public void onBindViewHolder(@NonNull final UserViewHolder userViewHolder, int position) {
 
         userViewHolder.userHashtagTv.setText(userList.get(position));
 
@@ -45,9 +47,13 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
             @Override
             public void onClick(View v) {
                 alertDialogpost = builderpost.create();
-                initPost();
+                for (Post p : postList) {
+                   if (p.userNickName == userViewHolder.userHashtagTv.getText().toString()){
+                       postListUser.add(p);
+                   }
+                }
                 RecyclerView recyclerView = dialogViewpost.findViewById(R.id.rvpostList);
-                RecyclerViewAdapterPost adapterPost = new RecyclerViewAdapterPost(context, postList);
+                RecyclerViewAdapterPost adapterPost = new RecyclerViewAdapterPost(context, postListUser);
                 recyclerView.setAdapter(adapterPost);
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
                 alertDialogpost.show();

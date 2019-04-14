@@ -39,7 +39,7 @@ public class RecyclerViewAdapterPost extends RecyclerView.Adapter<RecyclerViewAd
 
         Glide.with(context)
                 .asBitmap()
-                .load("https://firebasestorage.googleapis.com/v0/b/myinsta-4e85d.appspot.com/o/photos/"+ postList.get(position).image)
+                .load("gs://myinsta-4e85d.appspot.com/photos/"+ postList.get(position).image)
                 .into(postViewHolder.imagepost);
 
         postViewHolder.post_user_tv.setText(postList.get(position).userNickName);

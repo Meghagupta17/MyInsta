@@ -3,6 +3,7 @@ package com.example.myinsta;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +20,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -71,6 +75,28 @@ public class LogedInActivity extends AppCompatActivity {
         firebaseDatabase  = FirebaseDatabase.getInstance();
         myRef = firebaseDatabase.getReference("posts");
 
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                postList.clear();
+                for (DataSnapshot ds:dataSnapshot.getChildren()) {
+                    Post p = ds.getValue(Post.class);
+                    postList.add(p);
+                    if (!hashtagList.contains(p.hashtag)){
+                        hashtagList.add(p.hashtag);
+                    }
+                    if (!userNameList.contains(p.userNickName)){
+                        userNameList.add(p.userNickName);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference("photos");
 
@@ -111,6 +137,9 @@ public class LogedInActivity extends AppCompatActivity {
                         }
                     });
                     alertDialog.dismiss();
+                    image.setImageResource(R.mipmap.ic_launcher);
+                    postText.getText().clear();
+                    addHashtag.getText().clear();
                 }
             }
         });
@@ -139,9 +168,9 @@ public class LogedInActivity extends AppCompatActivity {
         btnuserList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initUser();
+                //initUser();
                 RecyclerView recyclerView = dialogViewuser.findViewById(R.id.rvuserList);
-                RecyclerViewAdapterUser adapterUser = new RecyclerViewAdapterUser(LogedInActivity.this, userNameList);
+                RecyclerViewAdapterUser adapterUser = new RecyclerViewAdapterUser(LogedInActivity.this, userNameList, postList);
                 recyclerView.setAdapter(adapterUser);
                 recyclerView.setLayoutManager(new LinearLayoutManager(LogedInActivity.this));
                 alertDialoguser.show();
@@ -159,9 +188,9 @@ public class LogedInActivity extends AppCompatActivity {
         btnhastagList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initHashtag();
+                //initHashtag();
                 RecyclerView recyclerView = dialogViewhashtag.findViewById(R.id.rvhashtagList);
-                RecyclerViewAdapterHashtag adapterHashtag = new RecyclerViewAdapterHashtag(LogedInActivity.this, hashtagList);
+                RecyclerViewAdapterHashtag adapterHashtag = new RecyclerViewAdapterHashtag(LogedInActivity.this, hashtagList, postList);
                 recyclerView.setAdapter(adapterHashtag);
                 recyclerView.setLayoutManager(new LinearLayoutManager(LogedInActivity.this));
                 alertDialoghashtag.show();
@@ -179,7 +208,7 @@ public class LogedInActivity extends AppCompatActivity {
         btnPostList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initPost();
+               // initPost();
                 RecyclerView recyclerView = dialogViewpost.findViewById(R.id.rvpostList);
                 RecyclerViewAdapterPost adapterPost = new RecyclerViewAdapterPost(LogedInActivity.this, postList);
                 recyclerView.setAdapter(adapterPost);

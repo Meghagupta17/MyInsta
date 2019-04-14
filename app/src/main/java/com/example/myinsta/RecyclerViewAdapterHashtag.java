@@ -16,12 +16,14 @@ public class RecyclerViewAdapterHashtag extends RecyclerView.Adapter<RecyclerVie
 
     private ArrayList<String> hasgtagList = new ArrayList<>();
     private ArrayList<Post> postList = new ArrayList<>();
+    private ArrayList<Post> postListHashtag = new ArrayList<>();
     private Context context;
     AlertDialog alertDialog;
 
-    public RecyclerViewAdapterHashtag(Context context1, ArrayList<String>hasgtagList1){
-        hasgtagList = hasgtagList1;
-        context = context1;
+    public RecyclerViewAdapterHashtag(Context context, ArrayList<String>hasgtagList, ArrayList<Post>postList){
+        this.hasgtagList = hasgtagList;
+        this.context = context;
+        this.postList = postList;
     }
 
     @NonNull
@@ -33,7 +35,7 @@ public class RecyclerViewAdapterHashtag extends RecyclerView.Adapter<RecyclerVie
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HashtagViewHolder hashtagViewHolder, int position) {
+    public void onBindViewHolder(@NonNull final HashtagViewHolder hashtagViewHolder, int position) {
         hashtagViewHolder.userHashtagTv.setText(hasgtagList.get(position));
 
         final AlertDialog.Builder builderpost = new AlertDialog.Builder(context);
@@ -45,9 +47,13 @@ public class RecyclerViewAdapterHashtag extends RecyclerView.Adapter<RecyclerVie
             @Override
             public void onClick(View v) {
                 alertDialog = builderpost.create();
-                initPost();
+                for (Post p: postList){
+                    if (p.hashtag == hashtagViewHolder.userHashtagTv.getText().toString()){
+                        postListHashtag.add(p);
+                    }
+                }
                 RecyclerView recyclerView = dialogViewpost.findViewById(R.id.rvpostList);
-                RecyclerViewAdapterPost adapterPost = new RecyclerViewAdapterPost(context, postList);
+                RecyclerViewAdapterPost adapterPost = new RecyclerViewAdapterPost(context, postListHashtag);
                 recyclerView.setAdapter(adapterPost);
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
                 alertDialog.show();
