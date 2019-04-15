@@ -32,6 +32,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.UUID;
 
+
 public class LogedInActivity extends AppCompatActivity {
 
     //components in LogedIn Activity
@@ -133,7 +134,9 @@ public class LogedInActivity extends AppCompatActivity {
                     filepath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
                             Toast.makeText(LogedInActivity.this, "Upload Done", Toast.LENGTH_LONG).show();
+
                         }
                     });
                     alertDialog.dismiss();
@@ -201,6 +204,7 @@ public class LogedInActivity extends AppCompatActivity {
         final AlertDialog.Builder builderpost = new AlertDialog.Builder(this);
         final View dialogViewpost = LayoutInflater.from(this).inflate(R.layout.dialog_recyclerview_postlist, null);
 
+
         builderpost.setView(dialogViewpost);
         alertDialogpost = builderpost.create();
 
@@ -216,48 +220,6 @@ public class LogedInActivity extends AppCompatActivity {
                 alertDialogpost.show();
             }
         });
-    }
-
-    //Dummy data for userlist
-    private void initUser() {
-        userNameList.clear();
-        userNameList.add("Willow");
-        userNameList.add("Logan");
-        userNameList.add("Sofia");
-    }
-
-    //Dummy data for hasttag list
-    private void initHashtag() {
-        hashtagList.clear();
-        hashtagList.add("#SanDiedo");
-        hashtagList.add("#sunny");
-        hashtagList.add("#beaches");
-    }
-
-    ////Dummy data for postlist
-    private void initPost() {
-        postList.clear();
-        Post newpost = new Post();
-        newpost.image = "https://www.telegraph.co.uk/content/dam/Travel/2016/August/san-diego-AP75672386.jpg?imwidth=1400";
-        newpost.userNickName = "willow";
-        newpost.hashtag = "#san diego";
-        newpost.postText = "Enjoy";
-        postList.add(newpost);
-
-        newpost = new Post();
-        newpost.image = "https://www.trolleytours.com/wp-content/uploads/2016/06/san-diego-beaches-480x270.jpg";
-        newpost.userNickName = "logan";
-        newpost.hashtag = "#beaches";
-        newpost.postText = "Beautiful";
-        postList.add(newpost);
-
-
-        newpost = new Post();
-        newpost.image = "http://www.solar-nation.org/images/sandiegocasolarpower.jpg";
-        newpost.userNickName = "sofia";
-        newpost.hashtag = "#sunny";
-        newpost.postText = "San Diego";
-        postList.add(newpost);
     }
 
     //sub activity to upload pic

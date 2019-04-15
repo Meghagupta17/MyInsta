@@ -56,6 +56,7 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
                 RecyclerViewAdapterPost adapterPost = new RecyclerViewAdapterPost(context, postListUser);
                 recyclerView.setAdapter(adapterPost);
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                alertDialogpost.onBackPressed();
                 alertDialogpost.show();
             }
         });
@@ -73,30 +74,5 @@ public class RecyclerViewAdapterUser extends RecyclerView.Adapter<RecyclerViewAd
             super(itemView);
             userHashtagTv = itemView.findViewById(R.id.user_hashtag_tv);
         }
-    }
-
-    private void initPost() {
-
-        Post newpost = new Post();
-        newpost.image = "https://www.telegraph.co.uk/content/dam/Travel/2016/August/san-diego-AP75672386.jpg?imwidth=1400";
-        newpost.userNickName = "willow";
-        newpost.hashtag = "#san diego";
-        newpost.postText = "Enjoy";
-        postList.add(newpost);
-
-        newpost = new Post();
-        newpost.image = "https://www.trolleytours.com/wp-content/uploads/2016/06/san-diego-beaches-480x270.jpg";
-        newpost.userNickName = "logan";
-        newpost.hashtag = "#beaches";
-        newpost.postText = "Beautiful";
-        postList.add(newpost);
-
-
-        newpost = new Post();
-        newpost.image = "http://www.solar-nation.org/images/sandiegocasolarpower.jpg";
-        newpost.userNickName = "sofia";
-        newpost.hashtag = "#sunny";
-        newpost.postText = "San Diego";
-        postList.add(newpost);
     }
 }

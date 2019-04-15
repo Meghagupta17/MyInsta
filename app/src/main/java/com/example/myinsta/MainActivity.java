@@ -1,8 +1,10 @@
 package com.example.myinsta;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     List<String> emailidList;
     List<String> usernameList;
     List<String> nicknameList;
+    private static int REQUEST_CODE=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
         emailidList = new ArrayList<>();
         usernameList = new ArrayList<>();
         nicknameList = new ArrayList<>();
+
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        }, REQUEST_CODE);
 
 
         FirebaseApp.initializeApp(this);
